@@ -9,7 +9,7 @@ namespace MPRV.Model
 		bool Populate (ReadableModelPopulator populator);
 	}
 
-	public delegate bool ReadableModelPopulator (ref IReadableModel model);
+	public delegate bool ReadableModelPopulator (IReadableModel model);
 
 	public static class IReadableModelExtensions
 	{

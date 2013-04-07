@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,12 +47,14 @@
     <Compile Include="Common\Reflection\TypeExtensions.cs" />
     <Compile Include="Model\WritableModel.cs" />
     <Compile Include="Model\Factory.cs" />
+    <Compile Include="Model\Data\IDbCommandExecutor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Model\" />
     <Folder Include="Model\Factory\" />
     <Folder Include="Common\" />
+    <Folder Include="Model\Data\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

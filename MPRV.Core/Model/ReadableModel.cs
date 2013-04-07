@@ -9,27 +9,21 @@ namespace MPRV.Model
 
 		public ReadableModel ()
 		{
-
 		}
 
 		#endregion
 
 		#region Public Methods
 
-		public bool Populate (ReadableModelPopulator populator)
-		{
-			throw new NotImplementedException ();
+		public virtual bool Populate (ReadableModelPopulator populator) {
+			return IsPopulated = populator(this);
 		}
 
 		#endregion
 
 		#region Public Properties
 
-		public bool IsPopulated {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
+		public bool IsPopulated { get; protected set; }
 
 		#endregion
 	}
