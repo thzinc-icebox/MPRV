@@ -48,11 +48,11 @@
     <Compile Include="Model\WritableModel.cs" />
     <Compile Include="Model\Factory.cs" />
     <Compile Include="Model\Data\IDbCommandExecutor.cs" />
+    <Compile Include="Model\DataRowPopulator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Model\Factory\" />
     <Folder Include="Common\" />
     <Folder Include="Model\Data\" />
   </ItemGroup>

@@ -28,7 +28,7 @@ namespace MPRV.Common.Reflection
 		/// <typeparam name='T'>
 		/// Type of custom attribute to use in filtering the members that will be iterated over.
 		/// </typeparam>
-		public static void SetMembers<T>(this object obj, Func<IGrouping<MemberInfo, T>, object> instantiator, BindingFlags bindingFlags = TypeExtensions.PROPERTY_AND_FIELD_BINDING_FLAGS, bool inherit = false)
+		public static void SetMembers<T>(this object obj, Func<IGrouping<MemberInfo, T>, object> instantiator, BindingFlags bindingFlags = TypeExtensions.PROPERTY_AND_FIELD_BINDING_FLAGS, bool inherit = true)
 			where T : Attribute
 		{
 			if (obj != null)
@@ -54,39 +54,35 @@ namespace MPRV.Common.Reflection
 		/// </param>
 		public static void SetMember(this object obj, MemberInfo member, object value)
 		{
-			if (obj != null)
+			// If the value is null to begin with, do not attempt to set a member to null
+			if (obj != null && value != null)
 			{
 				PropertyInfo property;
 				FieldInfo field;
-			
-				// If the value is null to begin with, do not attempt to set a member to null
-				if (value != null)
+
+				// If the member is a property, do some property-specific handling
+				if ((property = member as PropertyInfo) != null)
 				{
-					// If the member is a property, do some property-specific handling
-					if ((property = member as PropertyInfo) != null)
+					if (value.TryChangeType(property.PropertyType, out value))
 					{
-						if (value.TryChangeType(property.PropertyType, out value))
-						{
-							property.SetValue(obj, value, null);
-						}
-						else
-						{
-							// Properties can have DefaultValue decorations, which this is able to deal with; better than merely setting to null
-							PropertyDescriptor pd = TypeDescriptor.GetProperties(obj)[property.Name];
-							if (pd.CanResetValue(obj))
-							{
-								pd.ResetValue(obj);
-							}
-						}
+						property.SetValue(obj, value, null);
 					}
 					else
-					// If the member is a field, do some field-specific handling
-					if ((field = member as FieldInfo) != null)
+					{
+						// Properties can have DefaultValue decorations, which this is able to deal with; better than merely setting to null
+						PropertyDescriptor pd = TypeDescriptor.GetProperties(obj)[property.Name];
+						if (pd.CanResetValue(obj))
 						{
-							value.TryChangeType(property.PropertyType, out value);
-						
-							field.SetValue(obj, value);
+							pd.ResetValue(obj);
 						}
+					}
+				}
+				else if ((field = member as FieldInfo) != null)
+				{
+					// If the member is a field, do some field-specific handling
+					value.TryChangeType(field.FieldType, out value);
+
+					field.SetValue(obj, value);
 				}
 			}
 		}
