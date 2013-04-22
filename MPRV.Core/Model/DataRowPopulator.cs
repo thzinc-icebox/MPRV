@@ -107,6 +107,28 @@ namespace MPRV.Model
 			});
 
 			// TODO: implement ParentRelationship assignment
+			model.SetMembers<ParentRelationshipAttribute>(grouping => {
+				object value = null;
+				IEnumerable<DataRow> rows;
+				grouping.FirstOrDefault(pra => pra.TryGetRows(_row, out rows));
+
+				var declaringType = grouping.Key.DeclaringType;
+
+				if (declaringType.IsAssignableFrom(typeof(Lazy<>)))
+				{
+					var genericType = declaringType.GetGenericArguments()[0];
+					if (genericType.IsAssignableFrom(typeof(IReadableModel)))
+					{
+
+					}
+				}
+				else if (declaringType.IsAssignableFrom(typeof(IReadableModel)))
+				{
+
+				}
+
+				return value;
+			});
 
 			return result;
 		}
