@@ -3,6 +3,7 @@ using System.Data;
 using MPRV.Common.Reflection;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace MPRV.Model
 {
@@ -65,15 +66,15 @@ namespace MPRV.Model
 
 			#region Public Methods
 
-			public bool TryGetRows(DataRow row, out IEnumerable<DataRow> rows)
+			public bool TryGetRow(DataRow row, out DataRow parentRow)
 			{
 				bool result = false;
-				rows = null;
+				parentRow = null;
 
 				if (row != null && row.Table.ParentRelations.Contains(RelationshipName))
 				{
-					rows = row.GetParentRows(RelationshipName);
-					result = rows.Any();
+					parentRow = row.GetParentRow(RelationshipName);
+					result = parentRow != null;
 				}
 
 				return result;
@@ -109,22 +110,27 @@ namespace MPRV.Model
 			// TODO: implement ParentRelationship assignment
 			model.SetMembers<ParentRelationshipAttribute>(grouping => {
 				object value = null;
-				IEnumerable<DataRow> rows;
-				grouping.FirstOrDefault(pra => pra.TryGetRows(_row, out rows));
+				DataRow row = null;
 
-				var declaringType = grouping.Key.DeclaringType;
-
-				if (declaringType.IsAssignableFrom(typeof(Lazy<>)))
+				if (grouping.Any(pra => pra.TryGetRow(_row, out row)))
 				{
-					var genericType = declaringType.GetGenericArguments()[0];
-					if (genericType.IsAssignableFrom(typeof(IReadableModel)))
+					// Assumes because we're inside of .SetMembers, grouping.Key will always either be PropertyInfo or FieldInfo
+					var memberType = grouping.Key is PropertyInfo ? (grouping.Key as PropertyInfo).PropertyType : (grouping.Key as FieldInfo).FieldType;
+
+					if (memberType.GetGenericTypeDefinition().IsAssignableFrom(typeof(Lazy<>)))
 					{
-
+						var genericType = memberType.GetGenericArguments()[0];
+						if (typeof(IReadableModel).IsAssignableFrom(genericType))
+						{
+							ILazyReadableModel lazyReadableModel = (ILazyReadableModel)Activator.CreateInstance(typeof(LazyReadableModel<>).MakeGenericType(new Type[] { genericType }));
+							lazyReadableModel.Populator = new DataRowPopulator(row).Populator;
+							value = lazyReadableModel;
+						}
 					}
-				}
-				else if (declaringType.IsAssignableFrom(typeof(IReadableModel)))
-				{
-
+					else if (typeof(IReadableModel).IsAssignableFrom(memberType))
+					{
+						throw new NotImplementedException();
+					}
 				}
 
 				return value;

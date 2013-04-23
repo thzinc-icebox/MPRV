@@ -50,6 +50,7 @@
     <Compile Include="Model\Data\IDbCommandExecutor.cs" />
     <Compile Include="Model\DataRowPopulator.cs" />
     <Compile Include="Model\Data\ParameterList.cs" />
+    <Compile Include="Model\LazyReadableModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
