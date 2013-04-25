@@ -10,6 +10,32 @@ namespace MPRV.Model.Data
 	{
 		#region Public Methods
 
+		public static int ExecuteNonQuery(string connectionStringName, CommandType commandType, string query, ParameterList parameters)
+		{
+			int rowsAffected = 0;
+			
+			ConnectionStringSettings connectionInfo = ConfigurationManager.ConnectionStrings[connectionStringName];
+			
+			DbProviderFactory factory = DbProviderFactories.GetFactory(connectionInfo.ProviderName);
+
+			// Configure connection
+			using (IDbConnection connection = factory.CreateConnection())
+			{
+				connection.ConnectionString = connectionInfo.ConnectionString;
+				connection.Open();
+
+				// Build command
+				IDbCommand command = connection.CreateCommand();
+				command.CommandType = commandType;
+				command.CommandText = query;
+				command.AddParameters(parameters);
+
+				rowsAffected = command.ExecuteNonQuery();
+			}
+
+			return rowsAffected;
+		}
+
 		public static DataSet ExecuteQuery(string connectionStringName, CommandType commandType, string query, ParameterList parameters, params string[] tableNames)
 		{
 			DataSet result = new DataSet();

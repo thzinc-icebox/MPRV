@@ -10,6 +10,25 @@ namespace MPRV.Common.Reflection
 	/// </summary>
 	public static class ObjectExtensions
 	{
+		public static object GetMember(this object obj, MemberInfo member)
+		{
+			object value = null;
+
+			PropertyInfo property;
+			FieldInfo field;
+
+			if ((property = member as PropertyInfo) != null)
+			{
+				value = property.GetValue(obj, null);
+			}
+			else if ((field = member as FieldInfo) != null)
+			{
+				value = field.GetValue(obj);
+			}
+
+			return value;
+		}
+
 		/// <summary>
 		/// Sets members of this object decorated with <typeparamref name="T"/> based on the output of <paramref name="instantiator"/>
 		/// </summary>

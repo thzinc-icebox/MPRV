@@ -98,7 +98,7 @@ namespace MPRV.Model
 
 		public bool Populator(IReadableModel model)
 		{
-			bool result = false;
+ 			bool result = false;
 
 			model.SetMembers<ColumnAttribute>(grouping => {
 				object value = null;
@@ -114,9 +114,7 @@ namespace MPRV.Model
 
 				if (grouping.Any(pra => pra.TryGetRow(_row, out row)))
 				{
-					// Assumes because we're inside of .SetMembers, grouping.Key will always either be PropertyInfo or FieldInfo
-					var memberType = grouping.Key is PropertyInfo ? (grouping.Key as PropertyInfo).PropertyType : (grouping.Key as FieldInfo).FieldType;
-
+					var memberType = grouping.Key.GetMemberType();
 					if (memberType.GetGenericTypeDefinition().IsAssignableFrom(typeof(Lazy<>)))
 					{
 						var genericType = memberType.GetGenericArguments()[0];

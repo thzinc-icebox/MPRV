@@ -51,6 +51,9 @@
     <Compile Include="Model\DataRowPopulator.cs" />
     <Compile Include="Model\Data\ParameterList.cs" />
     <Compile Include="Model\LazyReadableModel.cs" />
+    <Compile Include="Model\EquatableAttribute.cs" />
+    <Compile Include="Common\ObjectExtensions.cs" />
+    <Compile Include="Model\Data\IWritableModelExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

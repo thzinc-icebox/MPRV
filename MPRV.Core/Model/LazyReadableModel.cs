@@ -25,6 +25,8 @@ namespace MPRV.Model
 				{
 					_value = new T();
 					_value.Populate(Populator);
+
+					IsValueCreated = true;
 				}
 
 				return _value;
