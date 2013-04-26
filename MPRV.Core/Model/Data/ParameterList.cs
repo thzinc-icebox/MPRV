@@ -25,6 +25,32 @@ namespace MPRV.Model.Data
 			#endregion
 		}
 
+		public class ReflectiveParameterAttribute : Attribute
+		{
+			#region Constructors
+			
+			public ReflectiveParameterAttribute(string name)
+				: this(name, name)
+			{
+			}
+
+			public ReflectiveParameterAttribute(string name, string reflectedParameterName)
+			{
+				Name = name;
+				ReflectedParameterName = reflectedParameterName;
+			}
+
+			#endregion
+			
+			#region Public Properties
+			
+			public string Name { get; protected set; }
+
+			public string ReflectedParameterName {get;protected set;}
+			
+			#endregion
+		}
+
 		#endregion
 
 		#region Constructors

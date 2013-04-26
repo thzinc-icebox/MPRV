@@ -13,6 +13,11 @@ namespace MPRV.Common
 
 			return (obj == null) ? defaultSelector() : selector(obj);
 		}
+
+		public static Lazy<T> AsLazy<T>(this T obj)
+		{
+			return new Lazy<T>(() => obj);
+		}
 	}
 }
 
