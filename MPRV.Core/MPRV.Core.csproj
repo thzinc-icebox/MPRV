@@ -54,6 +54,7 @@
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Model\Data\IWritableModelExtensions.cs" />
     <Compile Include="Common\Factory.cs" />
+    <Compile Include="Model\LazyList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

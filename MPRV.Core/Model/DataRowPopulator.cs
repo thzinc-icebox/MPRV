@@ -83,7 +83,42 @@ namespace MPRV.Model
 
 			#endregion
 		}
-
+		
+		public class ChildRelationshipAttribute : Attribute
+		{
+			#region Constructors
+			
+			public ChildRelationshipAttribute(string relationshipName)
+			{
+				RelationshipName = relationshipName;
+			}
+			
+			#endregion
+			
+			#region Public Properties
+			
+			public string RelationshipName { get; protected set; }
+			
+			#endregion
+			
+			#region Public Methods
+			
+			public bool TryGetRows(DataRow row, out IEnumerable<DataRow> childRows)
+			{
+				bool result = false;
+				childRows = null;
+				
+				if (row != null && row.Table.ChildRelations.Contains(RelationshipName))
+				{
+					childRows = row.GetChildRows(RelationshipName);
+					result = childRows != null;
+				}
+				
+				return result;
+			}
+			
+			#endregion
+		}
 		#endregion
 
 		#region Constructors
@@ -99,7 +134,7 @@ namespace MPRV.Model
 
 		public bool Populator(IReadableModel model)
 		{
- 			bool result = false;
+			bool result = false;
 
 			model.SetMembers<ColumnAttribute>(grouping => {
 				object value = null;
@@ -108,7 +143,6 @@ namespace MPRV.Model
 				return value;
 			});
 
-			// TODO: implement ParentRelationship assignment
 			model.SetMembers<ParentRelationshipAttribute>(grouping => {
 				object value = null;
 				DataRow row = null;
@@ -134,6 +168,40 @@ namespace MPRV.Model
 					}
 				}
 
+				return value;
+			});
+
+			model.SetMembers<ChildRelationshipAttribute>(grouping => {
+				object value = null;
+				IEnumerable<DataRow> rows = null;
+				
+				if (grouping.Any(cra => cra.TryGetRows(_row, out rows)))
+				{
+					var memberType = grouping.Key.GetMemberType();
+					if (memberType.GetGenericTypeDefinition().IsAssignableFrom(typeof(LazyList<>)))
+					{
+						var genericType = memberType.GetGenericArguments()[0];
+						if (typeof(IReadableModel).IsAssignableFrom(genericType))
+						{
+							var source = rows.Select(row => {
+								IReadableModel readableModel = (IReadableModel)Activator.CreateInstance(genericType);
+								var populator = new DataRowPopulator(row);
+								readableModel.Populate(populator.Populator);
+
+								return readableModel;
+							});
+
+							value = Activator.CreateInstance(typeof(LazyList<>).MakeGenericType(new Type[] { genericType }), new object[] { source });
+							
+							result = true;
+						}
+					}
+					else if (typeof(IReadableModel).IsAssignableFrom(memberType))
+					{
+						throw new NotImplementedException();
+					}
+				}
+				
 				return value;
 			});
 
