@@ -1,6 +1,6 @@
 using System;
 
-namespace MPRV.Model
+namespace MPRV.Common
 {
 	public class Factory<T>
 		where T : new()

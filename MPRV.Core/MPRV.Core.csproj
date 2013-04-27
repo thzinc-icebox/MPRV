@@ -46,7 +46,6 @@
     <Compile Include="Common\Reflection\ObjectExtensions.cs" />
     <Compile Include="Common\Reflection\TypeExtensions.cs" />
     <Compile Include="Model\WritableModel.cs" />
-    <Compile Include="Model\Factory.cs" />
     <Compile Include="Model\Data\IDbCommandExecutor.cs" />
     <Compile Include="Model\DataRowPopulator.cs" />
     <Compile Include="Model\Data\ParameterList.cs" />
@@ -54,6 +53,7 @@
     <Compile Include="Model\EquatableAttribute.cs" />
     <Compile Include="Common\ObjectExtensions.cs" />
     <Compile Include="Model\Data\IWritableModelExtensions.cs" />
+    <Compile Include="Common\Factory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
