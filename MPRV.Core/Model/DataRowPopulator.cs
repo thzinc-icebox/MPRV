@@ -4,6 +4,7 @@ using MPRV.Common.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace MPRV.Model
 {
@@ -115,7 +116,7 @@ namespace MPRV.Model
 				if (grouping.Any(pra => pra.TryGetRow(_row, out row)))
 				{
 					var memberType = grouping.Key.GetMemberType();
-					if (memberType.GetGenericTypeDefinition().IsAssignableFrom(typeof(Lazy<>)))
+					if (memberType.GetGenericTypeDefinition().IsAssignableFrom(typeof(LazyReadableModel<>)))
 					{
 						var genericType = memberType.GetGenericArguments()[0];
 						if (typeof(IReadableModel).IsAssignableFrom(genericType))
@@ -123,6 +124,8 @@ namespace MPRV.Model
 							ILazyReadableModel lazyReadableModel = (ILazyReadableModel)Activator.CreateInstance(typeof(LazyReadableModel<>).MakeGenericType(new Type[] { genericType }));
 							lazyReadableModel.Populator = new DataRowPopulator(row).Populator;
 							value = lazyReadableModel;
+
+							result = true;
 						}
 					}
 					else if (typeof(IReadableModel).IsAssignableFrom(memberType))

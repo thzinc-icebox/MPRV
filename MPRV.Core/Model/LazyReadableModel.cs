@@ -2,7 +2,8 @@ using System;
 
 namespace MPRV.Model
 {
-	public interface ILazyReadableModel {
+	public interface ILazyReadableModel
+	{
 		ReadableModelPopulator Populator { get; set; }
 	}
 
@@ -11,6 +12,24 @@ namespace MPRV.Model
 	{
 		public LazyReadableModel()
 		{
+			_instantiator = () => {
+				T value = new T();
+				value.Populate(Populator);
+
+				return value;
+			};
+		}
+
+		public LazyReadableModel(Func<T> instantiator)
+		{
+			_instantiator = instantiator;
+		}
+
+		public LazyReadableModel(T instance)
+		{
+			_value = instance;
+
+			IsValueCreated = true;
 		}
 
 		public ReadableModelPopulator Populator { get; set; }
@@ -23,8 +42,7 @@ namespace MPRV.Model
 			{
 				if (!IsValueCreated)
 				{
-					_value = new T();
-					_value.Populate(Populator);
+					_value = _instantiator();
 
 					IsValueCreated = true;
 				}
@@ -49,6 +67,7 @@ namespace MPRV.Model
 		}
 
 		protected T _value;
+		protected Func<T> _instantiator;
 	}
 }
 

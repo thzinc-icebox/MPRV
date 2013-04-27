@@ -128,8 +128,6 @@ namespace MPRV.Common.Reflection
 			
 			if (obj != null)
 			{
-				Type sourceType = obj.GetType();
-				
 				// If the source is already an instance of the destination, do nothing
 				if (destinationType.IsInstanceOfType(obj))
 				{
@@ -138,6 +136,8 @@ namespace MPRV.Common.Reflection
 				}
 				else
 				{
+					Type sourceType = obj.GetType();
+					
 					// Otherwise, get the TypeConverter for the destination and attempt to convert to the destination type
 					TypeConverter converter = TypeDescriptor.GetConverter(destinationType);
 					if (converter.CanConvertFrom(sourceType))
