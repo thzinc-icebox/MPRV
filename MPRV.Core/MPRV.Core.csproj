@@ -34,6 +34,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,12 +58,22 @@
     <Compile Include="Model\Data\IWritableModelExtensions.cs" />
     <Compile Include="Common\Factory.cs" />
     <Compile Include="Model\LazyList.cs" />
+    <Compile Include="Common\IPagedEnumerable.cs" />
+    <Compile Include="Common\ISearchableParameter.cs" />
+    <Compile Include="Common\ISearchableParameterFactory.cs" />
+    <Compile Include="Common\ISearchParameter.cs" />
+    <Compile Include="Common\ISearchParameterGroup.cs" />
+    <Compile Include="Common\ISearchableParameterExtensions.cs" />
+    <Compile Include="Process\IHandlerResponse.cs" />
+    <Compile Include="Process\HttpContextExtensions.cs" />
+    <Compile Include="Common\ISortParameter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Model\" />
     <Folder Include="Common\" />
     <Folder Include="Model\Data\" />
+    <Folder Include="Process\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
