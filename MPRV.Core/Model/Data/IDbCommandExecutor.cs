@@ -12,6 +12,8 @@ namespace MPRV.Model.Data
 
 		public static int ExecuteNonQuery(string connectionStringName, CommandType commandType, string query, ParameterList parameters)
 		{
+			Console.WriteLine (query);
+
 			int rowsAffected = 0;
 			
 			ConnectionStringSettings connectionInfo = ConfigurationManager.ConnectionStrings[connectionStringName];
@@ -38,6 +40,8 @@ namespace MPRV.Model.Data
 
 		public static DataSet ExecuteQuery(string connectionStringName, CommandType commandType, string query, ParameterList parameters, params string[] tableNames)
 		{
+			Console.WriteLine (query);
+
 			DataSet result = new DataSet();
 
 			ConnectionStringSettings connectionInfo = ConfigurationManager.ConnectionStrings[connectionStringName];
