@@ -70,6 +70,7 @@
     <Compile Include="View\RequestMappingAttribute.cs" />
     <Compile Include="Process\DelegateHandlerResponse.cs" />
     <Compile Include="View\HandlerFactory.cs" />
+    <Compile Include="View\ServerTransferHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
