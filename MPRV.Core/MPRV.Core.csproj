@@ -67,6 +67,9 @@
     <Compile Include="Process\IHandlerResponse.cs" />
     <Compile Include="Process\HttpContextExtensions.cs" />
     <Compile Include="Common\ISortParameter.cs" />
+    <Compile Include="View\RequestMappingAttribute.cs" />
+    <Compile Include="Process\DelegateHandlerResponse.cs" />
+    <Compile Include="View\HandlerFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -74,6 +77,7 @@
     <Folder Include="Common\" />
     <Folder Include="Model\Data\" />
     <Folder Include="Process\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
