@@ -22,7 +22,7 @@ namespace MPRV.View
 		public string RestfulPattern { get; protected set; }
 		#endregion
 		#region Public Methods
-		public bool TryMapRequest<TDelegate>(HttpContext context, MethodInfo methodInfo, out Delegate handlerInstantiator)
+		public bool TryMapRequest(HttpContext context, Type delegateType, MethodInfo methodInfo, out Delegate handlerInstantiator)
 		{
 			bool result;
 
@@ -31,20 +31,20 @@ namespace MPRV.View
 			handlerInstantiator = null;
 			if (match.Success)
 			{
-//				handlerInstantiator = Delegate.CreateDelegate(typeof(TDelegate), methodInfo, false);
-//
-//				if (handlerInstantiator == null)
-//				{
-//					result = false;
-//				}
-//				else
-//				{
+				handlerInstantiator = Delegate.CreateDelegate(delegateType, context.CurrentHandler, methodInfo, false);
+
+				if (handlerInstantiator == null)
+				{
+					result = false;
+				}
+				else
+				{
 					var urlParameters = _regexPattern.GetGroupNames().ToDictionary(key => key, key => match.Groups[key].Value);
 
 					context.Items.Add(Process.HttpContextExtensions.URL_PARAMETERS, urlParameters);
 
 					result = true;
-//				}
+				}
 			}
 			else
 			{
@@ -86,7 +86,7 @@ namespace MPRV.View
 				string typePattern;
 				if (!_restfulTypePatterns.TryGetValue(type, out typePattern))
 				{ 
-					typePattern + _restfulTypePatterns["string"];
+					typePattern = _restfulTypePatterns["string"];
 				}
 
 				return string.Concat("(?<", property, ">", typePattern, ")");
