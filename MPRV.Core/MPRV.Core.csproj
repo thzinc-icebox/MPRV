@@ -73,6 +73,7 @@
     <Compile Include="View\ServerTransferHandler.cs" />
     <Compile Include="View\RedirectHandler.cs" />
     <Compile Include="Process\ProcessResult.cs" />
+    <Compile Include="Model\PagedReadableModelEnumerable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

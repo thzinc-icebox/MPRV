@@ -18,7 +18,7 @@ namespace MPRV.Process
 			var urlParameters = context.GetItem<IDictionary<string, string>>(URL_PARAMETERS);
 
 			string parameter;
-			return urlParameters.TryGetValue(name, out parameter) ? parameter : string.Empty;
+			return urlParameters.TryGetValue(name, out parameter) ? context.Server.UrlDecode(parameter) : string.Empty;
 		}
 	}
 }

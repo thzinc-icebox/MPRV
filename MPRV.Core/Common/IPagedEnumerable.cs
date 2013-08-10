@@ -10,7 +10,9 @@ namespace MPRV.Common
 
 		long TotalPages { get; }
 
-		long Page { get; }
+		long Page { get; set; }
+
+		long PerPage { get; set; }
 
 		long Count { get; }
 		#endregion
